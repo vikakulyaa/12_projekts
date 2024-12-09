@@ -47,8 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const payload = {
             date: date,
-            min_temp: parseFloat(minTemp);
-            max_temp: parseFloat(maxTemp);
+            min_temp: parseFloat(minTemp),
+            max_temp: parseFloat(maxTemp),
         };
         //Datu nodošana Json
         const response = await fetch(apiUrl, {
@@ -57,18 +57,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(payload),
-            });
+        });
             //Pārbauda vai uz tabulu aiziet dati
-            if (response.ok) {
+        if (response.ok) {
                 form.reset();
                 loadTable();
-            } else {
+        } else {
                 const error = await response.json();
                 alert(error.error || "Kļūda saglabājot datus!");
-            }
+        }
         });
         //Ielādēt tabulu 
         loadTable();
 
     });
-});
