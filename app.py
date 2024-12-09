@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import json
 import os
 
-app = Flask(__name__)
+app = Flask(__name__)   #bug Flask ar lielo
 DATA_FILE = "data.json"
 
 #JSON faila ielāde un inicalizācija
@@ -36,20 +36,19 @@ def add_data():
     date = request_data.get("date")
     min_temp = request_data.get("min_temp")
     max_temp = request_data.get("max_temp")
-    #validācija jeb datu ielādes pārbaude
+    #validācija, datu ievades pārbaude
     if not date or min_temp is None or max_temp is None:
         return jsonify({"error": "Visi lauki ir obligāti!"}),400
     try:
         min_temp = float(min_temp)
         max_temp = float(max_temp)
     except ValueError:
-       return jsonify({"error": "Temoeratūrai jābūt skaitlim!"}),400
+        return jsonify({"error": "Temperatūrai jābūt skaitlim!"}),400
     #datu saglabāšana
     data = load_data()
     data.append({"date": date, "min_temp": min_temp, "max_temp": max_temp})
     save_data(data)
     return jsonify({"message": "Dati veiksmīgi saglabāti!"}), 201
-     
 
 
 

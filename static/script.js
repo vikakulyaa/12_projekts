@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tableBody = document.querySelector("#dataTable tbody");
     const avgTempElement = document.getElementById("avgTemp");
 
-    //Funkcija, lai ielādētu datus tabulā un atjaunotu
+    //F-cija, lai ielādētu datus tabulā un atjaunotu to
     const loadTable = async () => {
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -15,9 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let totalTemp = 0;
 
         data.forEach(entry => {
-            const avgTem = (entry.min_temp + entry.max_temp) / 2;
-            totalTemp += avgTempElement;
-            // veido datu tabulas tbody
+            const avgTemp = (entry.min_temp + entry.max_temp) / 2;
+            totalTemp += avgTemp;
+            //veido datu tabulas tbody
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${entry.date}</td>
@@ -26,21 +26,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${avgTemp.toFixed(2)}</td>
             `;
             tableBody.appendChild(row);
-
+            
         });
         //Aprēķina kopējo vidējo temperatūru
         const avgTemp = data.length > 0 ? totalTemp / data.length : 0;
         avgTempElement.textContent = `Vidējā temperatūra visām dienām: ${avgTemp.toFixed(2)}`;
     };
 
-    //Forma datu nosutīšanai
-    form.addEventListener("submit",async (event) => {
+    //Forma datu nosūtīšanai
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
         const date = document.getElementById("date").value;
         const minTemp = document.getElementById("min_temp").value;
         const maxTemp = document.getElementById("max_temp").value;
-        //Pārbauda vai visi lauki ir aizpildīti
-        if (!date || !minTemp || !maxTEmp) {
+        //Pārbauda vai visi lauku aizpildīti
+        if (!date || !minTemp || !maxTemp) {
             alert("Visi lauki ir obligāti!");
             return;
         }
@@ -52,22 +52,25 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         //Datu nodošana Json
         const response = await fetch(apiUrl, {
-            method: "POST", 
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(payload),
-        });
-            //Pārbauda vai uz tabulu aiziet dati
+        }); //BUGTālāk viss -1 atkāpe
+        //Pārbauda vai uz tabulu aiziet dati
         if (response.ok) {
-                form.reset();
-                loadTable();
+            form.reset();
+            loadTable();
         } else {
-                const error = await response.json();
-                alert(error.error || "Kļūda saglabājot datus!");
+            const error = await response.json();
+            alert(error.error || "Kļūda saglabājot datus!");                
         }
-        });
-        //Ielādēt tabulu 
-        loadTable();
-
     });
+    //Ielādēt tabulu
+    loadTable();
+
+    //BUG - liekais "});"
+
+
+});
